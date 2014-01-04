@@ -1,0 +1,35 @@
+{
+  "name": "prodoc",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Produce routine documents.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/caiguanhao/prodoc.git"
+  },
+  "keywords": [
+    "routine",
+    "document",
+    "word",
+    "doc"
+  ],
+  "author": "Cai Guanhao <caiguanhao@gmail.com> (Choi Goon-ho)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/caiguanhao/prodoc/issues"
+  },
+  "dependencies": {
+    "express": "~3.4.7",
+    "jade": "~1.0.2",
+    "js-yaml": "~2.1.3",
+    "handlebars": "~1.3.0"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.2",
+    "mimelib": "~0.2.14"
+  }
+}

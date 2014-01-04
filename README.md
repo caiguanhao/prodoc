@@ -1,0 +1,4 @@
+prodoc
+======
+
+Produce routine documents.

@@ -1,0 +1,20 @@
+doctype html
+html
+  head
+    meta(charset='UTF-8')
+    script(src='/js/vendor/jquery-2.0.3.min.js')
+    script(src='/js/vendor/handlebars-v1.3.0.js')
+    script(src='/js/main.js')
+    link(rel='stylesheet', href='/css/main.css')
+  body
+    #editor_container
+      #editor
+        - for paragraph_content, paragraph_name in manifest.manifest.__content__
+          .block
+            - for content, template in paragraph_content
+              .item(data-template=template, contenteditable)= content.trim()
+    #preview_container
+      #preview
+    .clearfix
+    a(href='/build') 下载
+    #info

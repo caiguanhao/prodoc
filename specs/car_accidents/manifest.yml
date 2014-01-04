@@ -1,0 +1,119 @@
+manifest:
+
+  __variables__:
+
+    案号: 'String'
+    原告:
+      - 姓名: 'String'
+        性别: [ '男', '女' ]
+        出生日期: 'GeneralDate'
+        民族: [ '汉族', '***' ]
+        地址: 'String'
+        身份证号码: 'String'
+        法定代理人:
+          - 姓名: 'String'
+            性别: [ '男', '女' ]
+            出生日期: 'GeneralDate'
+            民族: [ '汉族', '***' ]
+            地址: 'String'
+            关系: 'String'
+        委托代理人:
+          姓名: 'String'
+          职业: 'String'
+    被告:
+      - 姓名: 'String'
+        性别: [ '男', '女' ]
+        出生日期: 'GeneralDate'
+        民族: [ '汉族', '***' ]
+        地址: 'String'
+        身份证号码: 'String'
+        委托代理人:
+          姓名: 'String'
+          职业: 'String'
+
+  __content__:
+    头部:
+      t01: 广东省佛山市顺德区人民法院
+      t02: 民事判决书
+      t04: "（2013）佛顺法勒民初字第{{案号}}号"
+    基本信息:
+      t05: |
+        {{#每个 原告}}
+        原告{{姓名}}，{{性别}}，{{出生日期}}出生，{{民族}}，住{{地址}}，身份证号码：{{身份证号码}}。
+        {{#每个 法定代理人}}
+        法定代理人{{姓名}}，{{性别}}，{{出生日期}}出生，{{民族}}，住{{地址}}，系原告的{{关系}}。
+        {{/每个}}
+        委托代理人{{委托代理人.姓名}}，{{委托代理人.职业}}。
+        {{/每个}}
+
+  __templates__: 
+    __default__: t05
+    t01: 
+      __content__: "<p class=MsoNormal align=center style=\"text-align:center;line-height:75%; mso-layout-grid-align:auto\"><span style=\"font-size:22.0pt;mso-bidi-font-size:10.0pt;line-height:75%;mso-bidi-font-weight:bold\">{{content}}</span></p>"
+      __count__: 1
+    t02: 
+      __content__: "<p class=MsoNormal align=center style=\"text-align:center;line-height:75%\"><b style=\"mso-bidi-font-weight:normal\"><span style=\"font-size:26.0pt;mso-bidi-font-size:10.0pt;line-height:75%\">{{content}}</span></b></p>"
+      __count__: 1
+    t03: 
+      __content__: "<p class=MsoNormal align=right style=\"text-align:right;text-indent:29.35pt; mso-char-indent-count:2.0;line-height:30.0pt;mso-line-height-rule:exactly; text-autospace:none\"><span lang=EN-US style=\"mso-bidi-font-size:16.0pt\">{{content}}</span></p>"
+      __count__: 1
+    t04: 
+      __content__: "<p class=p0 align=right style=\"text-align:right\"><span style=\"font-size:16.0pt; font-family:FangSong_GB2312;color:black\">{{content}}</span></p>"
+      __count__: 1
+    t05: 
+      __content__: "<p class=p0 style=\"text-indent:29.35pt;mso-char-indent-count:2.0;line-height:30.0pt;mso-line-height-rule:exactly;mso-pagination:none\"><span style=\"font-size:16.0pt;font-family:FangSong_GB2312;color:black\">{{content}}</span></p>"
+      __count__: 30
+    t06: 
+      __content__: "<p class=MsoNormal style=\"text-align:justify;text-justify:inter-ideograph; text-indent:29.35pt;mso-char-indent-count:2.0;line-height:30.0pt;mso-line-height-rule:exactly;text-autospace:none;mso-vertical-align-alt:auto\"><span style=\"mso-bidi-font-size:16.0pt;color:black\">{{content}}</span></p>"
+      __count__: 1
+    t07: 
+      __content__: "<p class=p0 style=\"text-indent:29.35pt;mso-char-indent-count:2.0;line-height:30.0pt;mso-line-height-rule:exactly;mso-pagination:none\"><span style=\"font-size:16.0pt;font-family:FangSong_GB2312;mso-bidi-font-family:FangSong_GB2312\">{{content}}</span></p>"
+      __count__: 1
+    t08: 
+      __content__: "<p class=p0 style=\"text-indent:29.35pt;mso-char-indent-count:2.0;line-height:30.0pt;mso-line-height-rule:exactly;mso-pagination:none\"><span style=\"font-size:16.0pt;font-family:FangSong_GB2312;mso-bidi-font-family:FangSong_GB2312; mso-font-kerning:1.0pt\">{{content}}</span></p>"
+      __count__: 3
+    t09: 
+      __content__: "<p class=p0 style=\"text-indent:29.35pt;mso-char-indent-count:2.0;line-height:30.0pt;mso-line-height-rule:exactly;mso-pagination:none\"><span lang=EN-US style=\"font-size:16.0pt;font-family:FangSong_GB2312;color:black\">{{content}}</span></p>"
+      __count__: 10
+    t10: 
+      __content__: "<p class=MsoNormal style=\"text-align:justify;text-justify:inter-ideograph; text-indent:29.35pt;mso-char-indent-count:2.0;line-height:30.0pt;mso-line-height-rule:exactly;text-autospace:none;mso-vertical-align-alt:auto\"><span style=\"mso-bidi-font-size:16.0pt;mso-bidi-font-family:FangSong_GB2312; mso-font-kerning:1.0pt\">{{content}}</span></p>"
+      __count__: 7
+    t11: 
+      __content__: "<p class=MsoNormal style=\"text-align:justify;text-justify:inter-ideograph; text-indent:29.35pt;mso-char-indent-count:2.0;line-height:30.0pt;mso-line-height-rule:exactly;text-autospace:none;mso-vertical-align-alt:auto\"><span style=\"mso-bidi-font-size:16.0pt;mso-hansi-font-family:Arial;mso-bidi-font-family:FangSong_GB2312;mso-font-kerning:1.0pt\">{{content}}</span></p>"
+      __count__: 5
+    t12: 
+      __content__: "<p class=p0 style=\"text-indent:29.35pt;mso-char-indent-count:2.0;line-height:30.0pt;mso-line-height-rule:exactly;mso-pagination:none\"><span style=\"font-size:16.0pt;font-family:FangSong_GB2312;mso-hansi-font-family:Arial; mso-bidi-font-family:FangSong_GB2312;mso-font-kerning:1.0pt\">{{content}}</span></p>"
+      __count__: 3
+    t13: 
+      __content__: "<p class=MsoNormal style=\"text-align:justify;text-justify:inter-ideograph; text-indent:29.35pt;mso-char-indent-count:2.0;line-height:30.0pt;mso-line-height-rule:exactly;text-autospace:none;mso-vertical-align-alt:auto\"><span style=\"mso-bidi-font-size:16.0pt;mso-bidi-font-family:FangSong_GB2312; mso-font-kerning:1.0pt;mso-ansi-language:ZH-CN\">{{content}}</span></p>"
+      __count__: 1
+    t14: 
+      __content__: "<p class=MsoNormal style=\"text-align:justify;text-justify:inter-ideograph; text-indent:29.35pt;mso-char-indent-count:2.0;line-height:30.0pt;mso-line-height-rule:exactly;text-autospace:none;mso-vertical-align-alt:auto\"><span style=\"mso-bidi-font-size:16.0pt;mso-hansi-font-family:\"Courier New\"; mso-bidi-font-family:\"Courier New\";mso-ansi-language:ZH-CN\">{{content}}</span></p>"
+      __count__: 1
+    t15: 
+      __content__: "<p class=MsoNormal style=\"text-align:justify;text-justify:inter-ideograph; text-indent:29.35pt;mso-char-indent-count:2.0;line-height:30.0pt;mso-line-height-rule:exactly;text-autospace:none;mso-vertical-align-alt:auto\"><span style=\"mso-bidi-font-size:16.0pt;mso-bidi-font-family:FangSong_GB2312\">{{content}}</span></p>"
+      __count__: 6
+    t16: 
+      __content__: "<p class=MsoNormal style=\"text-align:justify;text-justify:inter-ideograph; text-indent:29.35pt;mso-char-indent-count:2.0;line-height:30.0pt;mso-line-height-rule:exactly;text-autospace:none;mso-vertical-align-alt:auto\"><span style=\"mso-bidi-font-size:18.0pt;mso-bidi-font-family:\\5B8B\\4F53-18030\">{{content}}</span></p>"
+      __count__: 1
+    t17: 
+      __content__: "<p class=MsoNormal style=\"text-align:justify;text-justify:inter-ideograph; text-indent:29.35pt;mso-char-indent-count:2.0;line-height:30.0pt;mso-line-height-rule:exactly;text-autospace:none;mso-vertical-align-alt:auto\"><span style=\"mso-bidi-font-size:16.0pt;mso-hansi-font-family:\"Courier New\"; mso-bidi-font-family:\"Courier New\"\">{{content}}</span></p>"
+      __count__: 1
+    t18: 
+      __content__: "<p class=MsoNormal style=\"text-align:justify;text-justify:inter-ideograph; text-indent:29.35pt;mso-char-indent-count:2.0;line-height:30.0pt;mso-line-height-rule:exactly;tab-stops:427.2pt;text-autospace:none;mso-vertical-align-alt:auto\"><span style=\"mso-bidi-font-size:16.0pt;mso-bidi-font-family:FangSong_GB2312; mso-font-kerning:1.0pt\">{{content}}</span></p>"
+      __count__: 2
+    t19: 
+      __content__: "<p class=MsoNormal style=\"text-align:justify;text-justify:inter-ideograph; text-indent:29.35pt;mso-char-indent-count:2.0;line-height:30.0pt;mso-line-height-rule:exactly;text-autospace:none;mso-vertical-align-alt:auto\"><span lang=EN-US style=\"mso-bidi-font-size:16.0pt;mso-bidi-font-family:FangSong_GB2312; mso-font-kerning:1.0pt\">{{content}}</span></p>"
+      __count__: 1
+    t20: 
+      __content__: "<p class=MsoNormal align=right style=\"text-align:right;text-indent:29.7pt; line-height:28.0pt;mso-line-height-rule:exactly;text-autospace:none;mso-vertical-align-alt:auto\"><span style=\"mso-bidi-font-size:16.0pt;mso-bidi-font-family:FangSong_GB2312; mso-font-kerning:1.0pt\">{{content}}</span></p>"
+      __count__: 3
+    t21: 
+      __content__: "<p class=MsoNormal align=right style=\"text-align:right;text-indent:29.7pt; line-height:28.0pt;mso-line-height-rule:exactly;text-autospace:none;mso-vertical-align-alt:auto\"><span lang=EN-US style=\"mso-bidi-font-size:16.0pt;mso-bidi-font-family:FangSong_GB2312;mso-font-kerning:1.0pt\">{{content}}</span></p>"
+      __count__: 3
+    t22: 
+      __content__: "<p class=MsoNormal style=\"text-align:justify;text-justify:inter-ideograph; line-height:28.0pt;mso-line-height-rule:exactly;text-autospace:none;mso-vertical-align-alt:auto\"><span style=\"mso-bidi-font-size:16.0pt;mso-bidi-font-family:FangSong_GB2312; mso-font-kerning:1.0pt\">{{content}}</span></p>"
+      __count__: 1
+    t23: 
+      __content__: "<p class=MsoNormal style=\"text-autospace:none;mso-vertical-align-alt:auto\"><span lang=EN-US style=\"mso-bidi-font-size:16.0pt;font-family:\"Courier New\"\">{{content}}</span></p>"
+      __count__: 1
