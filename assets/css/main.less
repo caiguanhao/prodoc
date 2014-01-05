@@ -5,19 +5,25 @@ html, body {
 #editor_container {
   float: left;
   width: 50%;
+  height: 600px;
+  overflow: scroll;
 }
 #editor {
   padding: 10px;
-}
-.block {
-  margin: 15px 0;
-}
-.item {
-  white-space: pre-wrap;
+  .block {
+    margin: 15px 0;
+    .item {
+      white-space: pre-wrap;
+      font-family: monospace;
+      font-size: 14px;
+    }
+  }
 }
 #preview_container {
   float: left;
   width: 50%;
+  height: 600px;
+  overflow: scroll;
 }
 #preview {
   padding: 10px;
@@ -42,4 +48,7 @@ html, body {
 }
 input, select {
   width: 150px;
+}
+#info {
+  margin: 0 0 50px;
 }

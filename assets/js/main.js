@@ -72,10 +72,10 @@ $(function(){
               if (defval instanceof Array) {
                 $.each(defval, function(index) {
                   output += '<div class="item"><span class="label">' + var_name + (index+1) + '</span>';
-                  output += build(var_content[0], defval ? defval[index] : null) + '</div>';
+                  output += build(var_content[0], defval[index]) + '</div>';
                 });
               } else {
-                output += '<div class="item"><span class="label">' + var_name + '</span>';
+                output += '<div class="item untouched"><span class="label">' + var_name + '</span>';
                 output += build(var_content[0], null) + '</div>';
               }
             } else {
@@ -95,6 +95,7 @@ $(function(){
     var obj = {};
     function modify(object, parents, index, val) {
       var current = parents.eq(index);
+      if (current.hasClass('untouched')) return;
       var is_array = current.data('is-array');
       var name = current.data('name');
       if (!name) name = current.index();
@@ -134,10 +135,21 @@ $(function(){
     var html = toHTML(Handlebars, manifest.__templates__, formToTplData(editor), what);
     $('#preview').html(html);
   }
+  function touch(element) {
+    var item = $(element).closest('.item');
+    var str = item.find('input').map(function() { return $(this).val(); }).toArray().join('');
+    if (str) {
+      item.removeClass('untouched');
+    } else {
+      item.addClass('untouched');
+    }
+  }
   $(document).on('keyup keydown', 'input, [contenteditable]', function() {
+    touch(this);
     parse(formToObject());
   });
   $(document).on('change', 'select', function() {
+    touch(this);
     parse(formToObject());
   });
 });
