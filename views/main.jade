@@ -2,10 +2,10 @@ doctype html
 html
   head
     meta(charset='UTF-8')
-    script(src='/js/vendor/jquery-2.0.3.min.js')
-    script(src='/js/vendor/handlebars-v1.3.0.js')
     script(src='/js/main.js')
     link(rel='stylesheet', href='/css/main.css')
+    - if (app.get('isDevelopment') === true)
+      script(src='http://localhost:35729/livereload.js')
   body
     #editor_container
       #editor

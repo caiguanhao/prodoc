@@ -1,4 +1,8 @@
-Handlebars.registerHelper('每个', Handlebars.helpers.each);
+require('./vendor/jquery-2.0.3.min.js');
+
+var Handlebars = require('handlebars');
+require('../../lib/hbs_config')(Handlebars);
+
 var testing;
 $(function(){
   var manifest = null;

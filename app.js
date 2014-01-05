@@ -5,10 +5,27 @@ var app = express();
 app.set('port', 3000);
 app.set('view engine', 'jade');
 app.set('views', __dirname + '/views');
-app.set('public_dir', __dirname + '/assets');
+app.set('public_dir', __dirname + '/public');
 app.use(express.static(app.get('public_dir')));
 app.use(express.bodyParser());
 app.use(express.methodOverride());
+
+app.configure('development', function(){
+  app.set('isDevelopment', true);
+});
+
+app.configure('production', function(){
+  app.set('isDevelopment', false);
+});
+
+var setLocals = function(req, res) {
+  res.locals.app = app;
+};
+
+app.use(function(req, res, next){
+  setLocals(req, res);
+  next();
+});
 
 require('js-yaml');
 
@@ -57,6 +74,15 @@ app.get('/', function(req, res, next) {
   res.render('main');
 });
 
-app.listen(app.get('port'), function() {
-  console.log('Express server listening on port ' + app.get('port'));
-});
+var start = function(cb) {
+  app.listen(app.get('port'), function() {
+    console.log('Express server listening on port ' + app.get('port'));
+    if (cb) cb();
+  });
+};
+
+if (require.main === module) {
+  start();
+} else {
+  module.exports = start;
+}

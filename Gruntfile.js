@@ -1,5 +1,53 @@
 module.exports = function(grunt) {
 
+  grunt.initConfig({
+    pkg: grunt.file.readJSON('package.json'),
+    browserify: {
+      public: {
+        files: {
+          'public/js/main.js': ['assets/js/main.js']
+        }
+      }
+    },
+    less: {
+      development: {
+        files: {
+          'public/css/main.css': 'assets/css/main.less'
+        }
+      }
+    },
+    watch: {
+      options: {
+        livereload: true
+      },
+      css: {
+        files: [ 'assets/css/*.less' ],
+        tasks: [ 'less' ]
+      },
+      client_js: {
+        files: [ 'assets/js/*.js' ],
+        tasks: [ 'browserify' ]
+      },
+      server_js: {
+        files: [ '<%= pkg.main %>', '**/*.yml' ],
+        tasks: [ 'develop' ],
+        options: { nospawn: true }
+      }
+    },
+    develop: {
+      server: {
+        file: '<%= pkg.main %>'
+      }
+    }
+  });
+
+  grunt.loadNpmTasks('grunt-browserify');
+  grunt.loadNpmTasks('grunt-contrib-less');
+  grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-develop');
+
+  grunt.registerTask('default', [ 'browserify', 'less', 'develop', 'watch' ]);
+
   grunt.registerTask('analyze', 'Analyze .mht files', function(file) {
     var finish = this.async();
     var mimelib = require("mimelib");
