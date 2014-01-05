@@ -11,10 +11,80 @@ $(function(){
   $.getJSON('/manifest', function(m) {
     manifest = m.manifest.manifest;
     testing = m.testing;
-    buildBlocks($('#editor'));
-    buildInfoForm();
-    parse(formToObject());
+    startMergedView();
+    // buildBlocks($('#editor'));
+    // buildInfoForm();
+    // parse(formToObject());
   });
+
+  // merged view:
+  function startMergedView() {
+    buildDocument();
+    parseDocument();
+    bindEvents();
+
+    function buildDocument() {
+      function buildItemsForBlock(block, block_dom) {
+        $.each(block, function(template_name, item) {
+          var item_dom = $('<div />').addClass('item');
+          item_dom.data('template', item.trim());
+          item_dom.data('template-name', template_name);
+          block_dom.append(item_dom);
+        });
+      }
+      var content = manifest.__content__;
+      $.each(content, function(block_name, block) {
+        var block_dom = $('<div />').addClass('block');
+        block_dom.data('name', block_name);
+        if (block instanceof Array) {
+          $.each(block, function() {
+            buildItemsForBlock(this, block_dom);
+          });
+        } else {
+          buildItemsForBlock(block, block_dom);
+        }
+        $('#main').append(block_dom);
+      });
+    }
+    function parseDocument() {
+      $('#main').find('.item').each(function() {
+        var tpl_data = {};
+        tpl_data[$(this).data('template-name')] = $(this).data('template');
+        $(this).html(toHTML(Handlebars, manifest.__templates__, tpl_data, testing));
+      });
+    }
+    function bindEvents() {
+      $(document).on('click', '#main .item', function(e) {
+        e.stopPropagation();
+        e.preventDefault();
+        if (!$(this).hasClass('editing')) {
+          var originalHeight = $(this).height();
+          $(this).text($(this).data('template'));
+          $(this).addClass('editing');
+          $(this).prop('contenteditable', true);
+          $(this).height(originalHeight);
+          var lines = $(this).data('template').split('\n').length;
+          var lineheight = Math.floor(originalHeight/lines);
+          if (lineheight > 30) lineheight = 30;
+          $(this).css({ 'line-height': lineheight + 'px' });
+        }
+      });
+      $(document).on('click', function(e) {
+        var editings = $('#main .item.editing');
+        if (editings.length > 0) {
+          editings.each(function() {
+            $(this).data('template', $(this).text());
+            $(this).removeClass('editing');
+            $(this).prop('contenteditable', false);
+            $(this).height('auto');
+          });
+          parseDocument();
+        }
+      });
+    }
+  }
+
+  // split view:
   function buildBlocks(parent) {
     function buildItemsForBlock(block, block_dom) {
       $.each(block, function(template_name, item) {
@@ -144,12 +214,12 @@ $(function(){
       item.addClass('untouched');
     }
   }
-  $(document).on('keyup keydown', 'input, [contenteditable]', function() {
-    touch(this);
-    parse(formToObject());
-  });
-  $(document).on('change', 'select', function() {
-    touch(this);
-    parse(formToObject());
-  });
+  // $(document).on('keyup keydown', 'input, [contenteditable]', function() {
+  //   touch(this);
+  //   parse(formToObject());
+  // });
+  // $(document).on('change', 'select', function() {
+  //   touch(this);
+  //   parse(formToObject());
+  // });
 });
