@@ -25,11 +25,11 @@ module.exports = function(grunt) {
         tasks: [ 'less' ]
       },
       client_js: {
-        files: [ 'assets/js/*.js' ],
+        files: [ 'assets/js/*.js', 'lib/*.js' ],
         tasks: [ 'browserify' ]
       },
       server_js: {
-        files: [ '<%= pkg.main %>', '**/*.yml' ],
+        files: [ '<%= pkg.main %>', 'lib/*.js', '**/*.yml' ],
         tasks: [ 'develop' ],
         options: { nospawn: true }
       }
