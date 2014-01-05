@@ -34,7 +34,7 @@ var test = require('./test_data.yml');
 
 app.get('/build', function(req, res, next) {
   var spec = require('./specs/car_accidents');
-  var Handlebars = require('Handlebars');
+  var Handlebars = require('handlebars');
   Handlebars.registerHelper('每个', Handlebars.helpers.each);
   var templates = manifest.manifest.__templates__;
   var doc = '';
