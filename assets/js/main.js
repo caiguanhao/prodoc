@@ -101,16 +101,19 @@ $(function(){
       var tpl_data = {};
       parent.find('.block').each(function() {
         var block_name = $(this).data('name');
-        tpl_data[block_name] = tpl_data[block_name] || {};
+        tpl_data[block_name] = tpl_data[block_name] || [];
         $(this).find('.item').each(function() {
           var template_name = $(this).data('template');
-          tpl_data[block_name][template_name] = $(this).text().trim();
+          var newObj = {};
+          newObj[template_name] = $(this).text().trim();
+          tpl_data[block_name].push(newObj);
         });
       });
       return tpl_data;
     }
     var editor = $('#editor');
-    $('#preview').html(toHTML(Handlebars, manifest.__templates__, formToTplData(editor), what));
+    var html = toHTML(Handlebars, manifest.__templates__, formToTplData(editor), what);
+    $('#preview').html(html);
   }
   $(document).on('keyup keydown', 'input, [contenteditable]', function() {
     parse(formToObject());
