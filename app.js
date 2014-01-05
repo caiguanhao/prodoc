@@ -35,30 +35,9 @@ var test = require('./test_data.yml');
 app.get('/build', function(req, res, next) {
   var spec = require('./specs/car_accidents');
   var Handlebars = require('handlebars');
-  Handlebars.registerHelper('每个', Handlebars.helpers.each);
-  var templates = manifest.manifest.__templates__;
-  var doc = '';
-  for (var c in manifest.manifest.__content__) {
-    for (var template in manifest.manifest.__content__[c]) {
-      var content = manifest.manifest.__content__[c][template].trim();
-      var text_temp = Handlebars.compile(content);
-
-      var temp;
-      if (templates.hasOwnProperty(template)) {
-        temp = templates[template];
-      } else {
-        temp = templates[templates.__default__];
-      }
-      var html_temp = Handlebars.compile(typeof(temp) === 'object' ? temp.__content__ : temp);
-      content = text_temp(test);
-      var con = content.replace(/\n{2}/g, '\n').split('\n');
-      for (var i = 0; i < con.length; i++) {
-        if (!con[i]) continue;
-        doc += html_temp({ content: con[i] }) + '\n\n';
-      }
-    }
-  }
-  doc = doc.trim();
+  require('./lib/hbs_config')(Handlebars);
+  var toHTML = require('./lib/toHTML');
+  var doc = toHTML(Handlebars, manifest.manifest.__templates__, manifest.manifest.__content__, test);
   res.set('Content-Type', 'application/msword');
   res.set('Content-Disposition', 'attachment; filename=' + encodeURIComponent('文档') + '.doc');
   res.end(spec.make(doc));

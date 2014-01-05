@@ -9,10 +9,6 @@ html
   body
     #editor_container
       #editor
-        - for paragraph_content, paragraph_name in manifest.manifest.__content__
-          .block
-            - for content, template in paragraph_content
-              .item(data-template=template, contenteditable)= content.trim()
     #preview_container
       #preview
     .clearfix

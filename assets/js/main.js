@@ -3,15 +3,42 @@ require('./vendor/jquery-2.0.3.min.js');
 var Handlebars = require('handlebars');
 require('../../lib/hbs_config')(Handlebars);
 
+var toHTML = require('../../lib/toHTML');
+
 var testing;
 $(function(){
   var manifest = null;
   $.getJSON('/manifest', function(m) {
     manifest = m.manifest.manifest;
     testing = m.testing;
+    buildBlocks($('#editor'));
     buildInfoForm();
     parse(formToObject());
   });
+  function buildBlocks(parent) {
+    function buildItemsForBlock(block, block_dom) {
+      $.each(block, function(template_name, item) {
+        var item_dom = $('<div />').addClass('item');
+        item_dom.text(item.trim());
+        item_dom.prop('contenteditable', true);
+        item_dom.data('template', template_name);
+        block_dom.append(item_dom);
+      });
+    }
+    var content = manifest.__content__;
+    $.each(content, function(block_name, block) {
+      var block_dom = $('<div />').addClass('block');
+      block_dom.data('name', block_name);
+      if (block instanceof Array) {
+        $.each(block, function() {
+          buildItemsForBlock(this, block_dom);
+        });
+      } else {
+        buildItemsForBlock(block, block_dom);
+      }
+      parent.append(block_dom);
+    });
+  }
   function buildInfoForm() {
     var manifest_variables = manifest.__variables__;
     function build(variables, defaults) {
@@ -70,30 +97,20 @@ $(function(){
     return get($('#info'));
   }
   function parse(what) {
-    var editor = $('#editor');
-    var editor_content = '';
-    var manifest_templates = manifest.__templates__;
-    editor.find('.block').each(function() {
-      $(this).find('.item').each(function() {
-        var template_used = $(this).data('template');
-        var template;
-        if (manifest_templates.hasOwnProperty(template_used)) {
-          template = manifest_templates[template_used];
-        } else {
-          template = manifest_templates[manifest_templates.__default__];
-        }
-        if (typeof(template) === 'object') template = template.__content__;
-        template = Handlebars.compile(template.trim());
-        var content = $(this).text().trim();
-        $.each(content.split('\n'), function(k, value) {
-          editor_content += template({ content: value }) + '\n';
+    function formToTplData(parent) {
+      var tpl_data = {};
+      parent.find('.block').each(function() {
+        var block_name = $(this).data('name');
+        tpl_data[block_name] = tpl_data[block_name] || {};
+        $(this).find('.item').each(function() {
+          var template_name = $(this).data('template');
+          tpl_data[block_name][template_name] = $(this).text().trim();
         });
       });
-      editor_content += '\n';
-    });
-    editor_content = editor_content.trim();
-    var template = Handlebars.compile(editor_content);
-    $('#preview').html(template(what))
+      return tpl_data;
+    }
+    var editor = $('#editor');
+    $('#preview').html(toHTML(Handlebars, manifest.__templates__, formToTplData(editor), what));
   }
   $(document).on('keyup keydown', 'input, [contenteditable]', function() {
     parse(formToObject());
