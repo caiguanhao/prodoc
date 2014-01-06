@@ -38,15 +38,36 @@ module.exports = function(grunt) {
       server: {
         file: '<%= pkg.main %>'
       }
+    },
+    copy: {
+      production: {
+        src: [ '<%= pkg.main %>', '*.yml', 'lib/**', 'specs/**', 'views/**', 'public/**' ],
+        dest: 'portablizer/node/'
+      }
+    },
+    clean: {
+      production: 'portablizer/node/'
     }
   });
 
   grunt.loadNpmTasks('grunt-browserify');
   grunt.loadNpmTasks('grunt-contrib-less');
   grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-contrib-copy');
+  grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-develop');
 
   grunt.registerTask('default', [ 'browserify', 'less', 'develop', 'watch' ]);
+  grunt.registerTask('build', [ 'browserify', 'less', 'clean:production',
+    '_add_production_modules_', 'copy:production' ]);
+
+  grunt.registerTask('_add_production_modules_', function() {
+    var src = grunt.config('copy.production.src');
+    for (var module in grunt.config('pkg').dependencies) {
+      src.push('node_modules/' + module + '/**');
+    }
+    grunt.config('copy.production.src', src);
+  });
 
   grunt.registerTask('analyze', 'Analyze .mht files', function(file) {
     var finish = this.async();
