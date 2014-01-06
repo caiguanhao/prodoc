@@ -7,8 +7,14 @@ html
     - if (app.get('isDevelopment') === true)
       script(src='http://localhost:35729/livereload.js')
   body
-    #main_container
-      #main
+    .wrapper
+      .split.split-1
+        #info_container
+          #info
+      .split.split-2
+        #main_container
+          #main
+      .clearfix
     //- #editor_container
     //-   #editor
     //- #preview_container

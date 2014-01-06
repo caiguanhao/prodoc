@@ -2,6 +2,31 @@ html, body {
   margin: 0;
   padding: 0;
 }
+html {
+  height: 100%;
+}
+body {
+  height: 100%;
+  overflow: hidden;
+}
+.wrapper {
+  height: 100%;
+  .split {
+    float: left;
+    width: 50%;
+    height: 100%;
+    overflow: scroll;
+  }
+  .split-1 {
+    width: 40%;
+  }
+  .split-2 {
+    width: 60%;
+  }
+}
+.clearfix {
+  clear: both;
+}
 #main_container {
   padding: 30px;
 }
@@ -18,53 +43,28 @@ html, body {
     overflow: scroll;
   }
 }
-#editor_container {
-  float: left;
-  width: 50%;
-  height: 600px;
-  overflow: scroll;
-}
-#editor {
-  padding: 10px;
-  .block {
-    margin: 15px 0;
-    .item {
-      white-space: pre-wrap;
-      font-family: monospace;
-      font-size: 14px;
-    }
-  }
-}
-#preview_container {
-  float: left;
-  width: 50%;
-  height: 600px;
-  overflow: scroll;
-}
-#preview {
-  padding: 10px;
-}
-.clearfix {
-  clear: both;
-}
-.label {
-  display: inline-block;
-  width: 80px;
-  height: 19px;
-  line-height: 19px;
-  font-size: 13px;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
-  vertical-align: top;
-  padding: 2px 5px;
-}
-.input {
-  margin-left: 20px;
-}
-input, select {
-  width: 150px;
+#info_container {
+  padding: 30px;
 }
 #info {
   margin: 0 0 50px;
+  .label {
+    display: inline-block;
+    width: 80px;
+    height: 19px;
+    line-height: 19px;
+    font-size: 13px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    vertical-align: top;
+    padding: 2px 5px;
+  }
+  .input {
+    margin-left: 20px;
+    white-space: nowrap;
+  }
+  input, select {
+    width: 150px;
+  }
 }
