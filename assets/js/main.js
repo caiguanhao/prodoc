@@ -59,6 +59,7 @@ $(function(){
         e.preventDefault();
         if (!$(this).hasClass('editing')) {
           var originalHeight = $(this).height();
+          var originalTextAlign = $('[style]', this).css('text-align');
           $(this).text($(this).data('template'));
           $(this).addClass('editing');
           $(this).prop('contenteditable', true);
@@ -66,7 +67,8 @@ $(function(){
           var lines = $(this).data('template').split('\n').length;
           var lineheight = Math.floor(originalHeight/lines);
           if (lineheight > 30) lineheight = 30;
-          $(this).css({ 'line-height': lineheight + 'px' });
+          if (lineheight < 14) lineheight = 14;
+          $(this).css({ 'line-height': lineheight + 'px', 'text-align': originalTextAlign });
         }
       });
       $(document).on('click', function(e) {
@@ -77,6 +79,7 @@ $(function(){
             $(this).removeClass('editing');
             $(this).prop('contenteditable', false);
             $(this).height('auto');
+            $(this).css({ 'line-height': 'normal' });
           });
           parseDocument();
         }
