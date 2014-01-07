@@ -59,7 +59,7 @@ module.exports = function(grunt) {
 
   grunt.registerTask('default', [ 'browserify', 'less', 'develop', 'watch' ]);
   grunt.registerTask('build', [ 'browserify', 'less', 'clean:production',
-    '_add_production_modules_', 'copy:production' ]);
+    '_add_production_modules_', 'copy:production', '_run_portablizer_configure_', 'make' ]);
 
   grunt.registerTask('_add_production_modules_', function() {
     var src = grunt.config('copy.production.src');
@@ -67,6 +67,34 @@ module.exports = function(grunt) {
       src.push('node_modules/' + module + '/**');
     }
     grunt.config('copy.production.src', src);
+  });
+
+  grunt.registerTask('_run_portablizer_configure_', function() {
+    var finish = this.async();
+    var configure = grunt.util.spawn({
+      cmd: './configure',
+      opts: {
+        cwd: 'portablizer'
+      }
+    }, function(error, result, code) {
+      finish();
+    });
+    configure.stdout.pipe(process.stdout);
+    configure.stderr.pipe(process.stderr);
+  });
+
+  grunt.registerTask('make', function() {
+    var finish = this.async();
+    var configure = grunt.util.spawn({
+      cmd: 'make',
+      opts: {
+        cwd: 'portablizer'
+      }
+    }, function(error, result, code) {
+      finish();
+    });
+    configure.stdout.pipe(process.stdout);
+    configure.stderr.pipe(process.stderr);
   });
 
   grunt.registerTask('analyze', 'Analyze .mht files', function(file) {
