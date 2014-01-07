@@ -59,7 +59,7 @@ module.exports = function(grunt) {
 
   grunt.registerTask('default', [ 'browserify', 'less', 'develop', 'watch' ]);
   grunt.registerTask('build', [ 'browserify', 'less', 'clean:production',
-    '_add_production_modules_', 'copy:production', '_git_submodule_init_',
+    '_git_submodule_init_', '_add_production_modules_', 'copy:production',
     '_run_portablizer_configure_', 'make' ]);
 
   grunt.registerTask('_add_production_modules_', function() {
@@ -72,17 +72,18 @@ module.exports = function(grunt) {
   });
 
   function run_command(cmd, args, cwd, finish) {
-    var configure = grunt.util.spawn({
+    var command = grunt.util.spawn({
       cmd: cmd,
       args: args,
       opts: {
         cwd: cwd
       }
     }, function(error, result, code) {
+      if (error) grunt.fail.fatal(error, code);
       if (finish) finish();
     });
-    configure.stdout.pipe(process.stdout);
-    configure.stderr.pipe(process.stderr);
+    command.stdout.pipe(process.stdout);
+    command.stderr.pipe(process.stderr);
   }
 
   grunt.registerTask('_run_portablizer_configure_', function() {
