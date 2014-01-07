@@ -59,7 +59,8 @@ module.exports = function(grunt) {
 
   grunt.registerTask('default', [ 'browserify', 'less', 'develop', 'watch' ]);
   grunt.registerTask('build', [ 'browserify', 'less', 'clean:production',
-    '_add_production_modules_', 'copy:production', '_run_portablizer_configure_', 'make' ]);
+    '_add_production_modules_', 'copy:production', '_git_submodule_init_',
+    '_run_portablizer_configure_', 'make' ]);
 
   grunt.registerTask('_add_production_modules_', function() {
     var src = grunt.config('copy.production.src');
@@ -67,34 +68,40 @@ module.exports = function(grunt) {
       src.push('node_modules/' + module + '/**');
     }
     grunt.config('copy.production.src', src);
+    grunt.log.ok();
   });
 
-  grunt.registerTask('_run_portablizer_configure_', function() {
-    var finish = this.async();
+  function run_command(cmd, args, cwd, finish) {
     var configure = grunt.util.spawn({
-      cmd: './configure',
+      cmd: cmd,
+      args: args,
       opts: {
-        cwd: 'portablizer'
+        cwd: cwd
       }
     }, function(error, result, code) {
-      finish();
+      if (finish) finish();
     });
     configure.stdout.pipe(process.stdout);
     configure.stderr.pipe(process.stderr);
+  }
+
+  grunt.registerTask('_run_portablizer_configure_', function() {
+    run_command('./configure', [], 'portablizer', this.async());
+  });
+
+  grunt.registerTask('_git_submodule_init_', function() {
+    var finish = this.async();
+    if (!grunt.file.isDir('portablizer') || !grunt.file.isFile('portablizer', '.git')) {
+      run_command('git', [ 'submodule', 'init' ], null, function() {
+        run_command('git', [ 'submodule', 'update' ], null, finish);
+      });
+    } else {
+      run_command('git', [ 'pull', 'origin', 'master' ], 'portablizer', finish);
+    }
   });
 
   grunt.registerTask('make', function() {
-    var finish = this.async();
-    var configure = grunt.util.spawn({
-      cmd: 'make',
-      opts: {
-        cwd: 'portablizer'
-      }
-    }, function(error, result, code) {
-      finish();
-    });
-    configure.stdout.pipe(process.stdout);
-    configure.stderr.pipe(process.stderr);
+    run_command('make', [], 'portablizer', this.async());
   });
 
   grunt.registerTask('analyze', 'Analyze .mht files', function(file) {
