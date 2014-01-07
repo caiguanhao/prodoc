@@ -2,7 +2,7 @@ var express = require('express');
 
 var app = express();
 
-app.set('port', 3000);
+app.set('port', process.env.PORTABLIZER_PORT || 3000);
 app.set('view engine', 'jade');
 app.set('views', __dirname + '/views');
 app.set('public_dir', __dirname + '/public');
